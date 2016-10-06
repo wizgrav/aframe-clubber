@@ -1,0 +1,40 @@
+{
+  "name": "aframe-clubber",
+  "version": "1.0.0",
+  "description": "Music driven visualisations for A-Frame.",
+  "main": "index.js",
+  "scripts": {
+    "dist": "webpack index.js dist/aframe-clubber.js && webpack -p index.js dist/aframe-clubber.min.js",
+    "postpublish": "npm run dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wizgrav/aframe-clubber.git"
+  },
+  "keywords": [
+    "aframe",
+    "aframe-component",
+    "aframe-vr",
+    "vr",
+    "mozvr",
+    "webvr",
+    "clubber",
+    "rhythm",
+    "music"
+  ],
+  "author": "Yannis Gravezas <wizgrav@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wizgrav/aframe-clubber/issues"
+  },
+  "homepage": "https://github.com/wizgrav/aframe-clubber",
+  "dependencies": {
+    "clubber": "^1.0.3"
+  },
+  "devDependencies": {
+    "aframe": "^0.3.1",
+    "browserify": "^13.0.0",
+    "browserify-css": "^0.9.1",
+    "webpack": "^1.13.0"
+  }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="twitter:card" content="player">
+    <meta name="twitter:site" content="@wizgrav">
+    <meta name="twitter:title" content="@aframe Post Processing with Clubber">
+    <meta name="twitter:description" content="AFRAME Post Processing with Clubber">
+    <meta name="twitter:player" content="https://wizgrav.github.io/aframe-clubber/demo/index.html">
+    <meta name="twitter:player:width" content="600">
+    <meta name="twitter:player:height" content="370">
+    <meta charset="utf-8">
+    <title>Post-processing with Clubber</title>
+    <meta name="description" content="A-Frame - Clubber">
+    
+    <script src="lib/aframe.js"></script>
+    <script src="../dist/aframe-clubber.min.js"></script>
+    
+    <script src="components/envmap.js"></script>
+    <script src="components/bloom.js"></script>
+    <script src="components/compositor.js"></script>
+    
+    
+    <style>
+        * {
+          margin:0;
+          padding:0;
+        }
+        #header {
+          position:fixed;
+        }
+        audio {
+          position: fixed;
+          display:none;
+        }
+        #header a {
+          text-decoration: none;
+          color: gray;
+          font-family: monospace;
+          font-size: 12px;
+        }
+
+        #header img {
+          vertical-align: middle;
+        }
+    </style>
+  </head>
+  <body>
+     <audio id="audio" src='https://api.soundcloud.com/tracks/85993823/stream?client_id=56c4f3443da0d6ce6dcb60ba341c4e8d' autoplay crossOrigin = "anonymous"></audio>
+    <a-scene compositor=""  bloom="intensity: 1.0;" post-processing="true"
+      clubbers = "src: #audio"
+      clubber = "debug:true; exec: bloom.intensity = 0.66 * prev + high[3] * (1 - low[3]) # bloom.threxp = 4  + 4 * mid[0] + 8 * high[0]"
+    >
+      <a-assets>
+        <video id="video" src="https://ucarecdn.com/bcece0a8-86ce-460e-856b-40dac4875f15/"
+               autoplay loop ></video>
+       
+      </a-assets>
+      <a-entity position="0 1.8 5">
+        <a-entity camera="far:6000; near:1;" look-controls></a-entity>
+      </a-entity>
+      <a-sphere  envmap=""  rotation="0 180 0" color="white" position="0 -10 -40" radius="10"
+          clubber="debug:true; exec: scale.x.y.z = 0.33 + 0.66 * Math.abs(mid[1] - high[1]) + Math.min(low[3],mid[3]) # .material.postOpacity = Math.max(high[3], low[3])" ></a-sphere>
+      <a-videosphere src="#video" rotation="0 180 0"
+          clubber="debug:true; exec: .material.postOpacity = 1 - Math.min(high[2], low[2]) " ></a-videosphere>
+    </a-scene>
+  </body>
+</html>
