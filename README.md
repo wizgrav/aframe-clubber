@@ -15,7 +15,7 @@ The system can be configured using the following properties:
 | --------              | -----------                                                          | ------------- |
 | src                   | A selector to get the audio/video element to listen to.              | null          |
 | size                  | The number of samples to grab for the fourier transform.             | 2048          |
-| mute                  | If true the audio element will output to the speakers.               | true          |
+| mute                  | If true the audio element will not output to the speakers.               | false          |
 | lowRange              | The range of midi notes tracked by the low band.                     | [10,32]       |
 | midRange              | The range of midi notes tracked by the mid band.                     | [32,48]       |
 | highRange             | The range of midi notes tracked by the high band.                    | [48,128]      |
