@@ -75,9 +75,11 @@ AFRAME.registerComponent('bloom', {
   },
 
   tock: function () {
-    var rts = this.getTargets();
     var el = this.el;
     var scene = el.sceneEl;
+    if (!scene.renderTarget) { return; }
+    var rts = this.getTargets();
+    
     var uns = this.brightMaterial.uniforms;
     var rt = scene.renderTarget;
     // Bright pass: isolate and highlight the brightest parts of the scene.

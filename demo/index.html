@@ -46,7 +46,7 @@
   </head>
   <body>
      <audio id="audio" src='https://api.soundcloud.com/tracks/85993823/stream?client_id=56c4f3443da0d6ce6dcb60ba341c4e8d' autoplay crossOrigin = "anonymous"></audio>
-    <a-scene compositor=""  bloom="intensity: 1.0;" post-processing="true"
+    <a-scene compositor  bloom="intensity: 1.0;"
       clubbers = "src: #audio"
       clubber = "debug:true; exec: bloom.intensity = 0.66 * prev + high[3] * (1 - low[3]) # bloom.threxp = 4  + 4 * mid[0] + 8 * high[0]"
     >

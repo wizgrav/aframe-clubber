@@ -1,27 +1,10 @@
 /* global AFRAME THREE */
-
-AFRAME.registerComponent('post-process', {
-  schema: {type: 'boolean'},
-
-  update: function (oldData) {
-    this.el.sceneEl.enablePostProcessing = this.data;
-  },
-
-  // Cleanup the scene objects opacities.
-  remove: function () {
-    this.el.sceneEl.object3D.traverse(function (obj) {
-      var mat = obj.material;
-      if (mat && mat.postOpacity !== undefined) {
-        mat.opacity = 1;
-      }
-    });
-    this.el.sceneEl.enablePostProcessing = false;
-  }
-});
-
 // The compositor. Blends the blurred renderTarget from the bloom component.
 // It also checks opacity and converts parts of the frame to ascii(Alpha masking).
 AFRAME.registerSystem('compositor', {
+
+  schema: { enable: { default: true } },
+
   init: function () {
     var self = this;
     this.setupPostState();
@@ -34,7 +17,15 @@ AFRAME.registerSystem('compositor', {
     this.sceneEl.addEventListener('post-modified', this.evh);
   },
 
+  update: function () {
+    this.sceneEl.renderTarget = this.data.enable ? this.renderTarget : null;
+  },
+
   setupPostState: function () {
+    this.renderTarget = new THREE.WebGLRenderTarget(1, 1, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat });
+    this.renderTarget.texture.generateMipmaps = false;
+    this.renderTarget.depthTexture = new THREE.DepthTexture();
+    this.renderTarget.stencilBuffer = false;
     this.scenePost = new THREE.Scene();
     this.cameraPost = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     this.quadPost = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), null);
@@ -87,6 +78,13 @@ AFRAME.registerSystem('compositor', {
   // Traverse scene objects and set opacity based on the postOpacity attribute set by the pulse component.
   tick: function (time) {
     var scene = this.sceneEl;
+    var size= this.sceneEl.renderer.getSize();    
+    var rt = this.sceneEl.renderTarget;    
+    if (!rt) { return; }
+    if (size.width != rt.width || size.height != rt.height) {
+      rt.setSize(size.width, size.height);
+    }
+        
     scene.object3D.traverse(function (obj) {
       var material = obj.material;
       if (material && material.postOpacity !== undefined) {
@@ -97,6 +95,7 @@ AFRAME.registerSystem('compositor', {
 
   tock: function () {
     var scene = this.sceneEl;
+    if (!scene.renderTarget) { return; }
     var renderTarget = scene.renderTarget;
     if (this.needsConfig) { this.config(); }
     var uniforms = this.quadPost.material.uniforms;
