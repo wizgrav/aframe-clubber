@@ -3,7 +3,7 @@
 // It also checks opacity and converts parts of the frame to ascii(Alpha masking).
 AFRAME.registerSystem('compositor', {
 
-  schema: { enable: { default: true } },
+  schema: { default: true },
 
   init: function () {
     var self = this;
@@ -18,7 +18,7 @@ AFRAME.registerSystem('compositor', {
   },
 
   update: function () {
-    this.sceneEl.renderTarget = this.data.enable ? this.renderTarget : null;
+    this.sceneEl.renderTarget = this.data ? this.renderTarget : null;
   },
 
   setupPostState: function () {
